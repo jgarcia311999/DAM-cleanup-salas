@@ -1,0 +1,9 @@
+{
+  "name": "dam-cleanup-salas",
+  "version": "1.0.0",
+  "main": "cleanUp.js",
+  "license": "MIT",
+  "dependencies": {
+    "firebase-admin": "^11.10.1"
+  }
+}

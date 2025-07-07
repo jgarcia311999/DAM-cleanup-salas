@@ -1,0 +1,35 @@
+name: Cleanup Firebase Salas
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run cleanup script
+        run: node cleanUp.js
+        env:
+          TYPE: ${{ secrets.TYPE }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          AUTH_URI: ${{ secrets.AUTH_URI }}
+          TOKEN_URI: ${{ secrets.TOKEN_URI }}
+          AUTH_PROVIDER: ${{ secrets.AUTH_PROVIDER }}
+          CLIENT_CERT: ${{ secrets.CLIENT_CERT }}
