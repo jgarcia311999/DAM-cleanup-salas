@@ -20,7 +20,7 @@ const db = admin.firestore();
 
   for (const doc of snapshot.docs) {
     const data = doc.data();
-    const ultima = data.timestamp;
+    const ultima = data.timestamp?.toMillis?.() ?? data.timestamp;
 
     if (!ultima || ahora - ultima > expiracion) {
       await db.collection('salas').doc(doc.id).delete();
