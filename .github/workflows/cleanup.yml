@@ -23,4 +23,4 @@ jobs:
       - name: Run cleanup script
         run: node cleanUp.js
         env:
-          FIREBASE_CONFIG_JSON: ${{ secrets.FIREBASE_CONFIG_JSON }}
+          FIREBASE_CONFIG_JSON_BASE64: ${{ secrets.FIREBASE_CONFIG_JSON_BASE64 }}

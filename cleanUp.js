@@ -1,7 +1,8 @@
 const admin = require("firebase-admin");
 
-// Leer y parsear el JSON completo desde la variable FIREBASE_CONFIG_JSON
-const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG_JSON);
+// Decodifica el secreto base64 y parsea el JSON
+const decoded = Buffer.from(process.env.FIREBASE_CONFIG_JSON_BASE64, 'base64').toString('utf8');
+const serviceAccount = JSON.parse(decoded);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -14,6 +15,7 @@ const db = admin.firestore();
   const expiracion = 1000 * 60 * 30; // 30 minutos
 
   const snapshot = await db.collection('salas').get();
+
   let eliminadas = 0;
 
   for (const doc of snapshot.docs) {
