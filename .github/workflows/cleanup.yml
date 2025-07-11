@@ -24,3 +24,32 @@ jobs:
         run: node cleanUp.js
         env:
           FIREBASE_CONFIG_JSON_BASE64: ${{ secrets.FIREBASE_CONFIG_JSON_BASE64 }}
+
+      - name: Confirmación visual
+        run: echo "✅ Limpieza completada"
+
+      - name: Notificar éxito por issue
+        if: ${{ success() }}
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues \
+            -d '{
+              "title": "✅ Limpieza de Firebase exitosa",
+              "body": "@jgarcia311999 la limpieza de Firebase se ejecutó correctamente 🧹",
+              "labels": ["notificación"]
+            }'
+
+      - name: Notificar error por issue
+        if: ${{ failure() }}
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues \
+            -d '{
+              "title": "❌ Error en limpieza de Firebase",
+              "body": "Hola @jgarcia311999, la acción de limpieza falló en `${{ github.ref }}`. Revisa los logs del workflow para más detalles.",
+              "labels": ["error", "notificación"]
+            }'
